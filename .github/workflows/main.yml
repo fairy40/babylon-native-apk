@@ -1,0 +1,38 @@
+name: Build APK with NDK and CMake
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v2
+
+    - name: Install NDK and CMake
+      run: |
+        yes | sdkmanager "ndk;25.2.9519653" "cmake;3.22.1"
+
+    - name: Build native project
+      run: |
+        cd native-app
+        ./gradlew assembleDebug
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: AetheriumNexus-APK
+        path: native-app/app/build/outputs/apk/debug/app-debug.apk
