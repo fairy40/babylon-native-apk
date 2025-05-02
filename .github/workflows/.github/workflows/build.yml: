@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Dummy Build (simulando APK)
         run: |
@@ -18,7 +18,8 @@ jobs:
           echo "APK SIMULADO" > output/app-release.apk
 
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: app-release
           path: output/app-release.apk
+
